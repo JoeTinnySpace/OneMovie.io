@@ -1,0 +1,41 @@
+/* src/components/movie_card/simple_movie_card.css */
+
+.simple_movie-card {
+    position: relative;
+    overflow: hidden; /* Hide overflow */
+    width: 200px; /* Set width as needed */
+    height: 300px; /* Set height as needed */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+  }
+  
+  .simple_movie-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio */
+  }
+  
+  .rating-overlay {
+    position: absolute;
+    bottom: 0; /* Align to the bottom */
+    right: 0; /* Align to the right */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    color: white;
+    padding: 5px;
+    opacity: 1; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Transition effect */
+  }
+  
+  /* .simple_movie-card:hover .rating-overlay {
+    opacity: 1; /* Show overlay on hover */
+   */
+  
+  .rating-text {
+    margin: 0; /* Remove default margin */
+    font-size: 16px; /* Adjust font size as needed */
+  }
+  
+  .star-icon {
+    margin-left: 5px; /* Space between rating and star */
+  }
+  

@@ -1,0 +1,35 @@
+.movie-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: white;
+    text-align: center;
+  }
+  
+  .movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .movie-poster {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+    margin: 10px 0;
+  }
+  
+  .star-icon {
+    color: gold;
+    margin-left: 5px;
+  }
+  
+  .movie-card p {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
