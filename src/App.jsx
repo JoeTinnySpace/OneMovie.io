@@ -5,6 +5,7 @@ import Navbar from './components/navbar/navbar';
 import Lists from './screens/lists'
 import Explore from './screens/explore'
 import About from './screens/about'
+import MovieDetails from './screens/movie_details';
 
 const MovieApp = () => {
   
@@ -17,7 +18,8 @@ const MovieApp = () => {
           <Routes>
             <Route path="/" element={ <Explore/>  } />
             <Route path="/lists" element={ <Lists/> } />
-            <Route path="/about" element={< About/> } />
+            <Route path="/about" element={ <About/> } />
+            <Route path="/movie/:id" element={ <MovieDetails/> } />
           </Routes>
         </div>
       </main>

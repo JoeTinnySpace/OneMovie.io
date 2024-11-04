@@ -3,6 +3,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const SimpleMovieCard = ({ movie, onRemove }) => {
   return (
@@ -12,7 +13,11 @@ const SimpleMovieCard = ({ movie, onRemove }) => {
         alt={movie.title}
         className="simple_movie-poster"
       />
-      <h3>{movie.title}</h3>
+      
+      <Link to={`/movie/${movie.id}`}>
+        <h3>{movie.title}</h3>
+        </Link>
+
       <div className="rating-overlay">
         <p className="rating-text">
           {Math.round(movie.vote_average * 10) / 10}
