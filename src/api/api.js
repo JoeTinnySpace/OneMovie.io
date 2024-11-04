@@ -10,7 +10,7 @@ export const fetchMovies = async (endpoint) => {
       params: {
         api_key: API_KEY,
         language: 'en-US',
-        page: 1,
+        include_adult: 'false'
       },
     });
     return response.data.results; // Return only the results array

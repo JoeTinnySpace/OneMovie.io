@@ -38,6 +38,15 @@ const Lists = () => {
     getMovies();
   }, []);
 
+ 
+    const removeFromMyMoviesList = (movieId) => {
+      const updatedList = myMoviesList.filter(movie => movie.id !== movieId);
+      setMyMoviesList(updatedList);
+      localStorage.setItem('myMoviesList', JSON.stringify(updatedList));
+    };
+
+  
+
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
   }
@@ -45,22 +54,19 @@ const Lists = () => {
   return (
 
     <div className="p-4">
+      <h1 className="text-left text-2xl font-semibold mb-6">My List</h1>
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      {localStorageError ? (
+              <div className="text-center text-500"> {localStorageError}</div>
+            ) :(myMoviesList.map((myMovie) => (
+          
+          <SimpleMovieCard key={myMovie.id} movie={myMovie} onRemove={() => removeFromMyMoviesList(myMovie.id)} />
+          )))
+        }
+          
+      </div>
 
-    <h1 className="text-left text-2xl font-semibold mb-6">My List</h1>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {localStorageError ? (
-                <div className="text-center text-500"> {localStorageError}</div>
-              ) :(myMoviesList.map((myMovie) => (
-            <SimpleMovieCard 
-                key={myMovie.id} 
-                movie={myMovie} 
-            />
-            )))
-          }
-           
-        </div>
-
-        <h1 className="text-left text-2xl font-semibold mb-6">Now Playing Movies</h1>
+      <h1 className="text-left text-2xl font-semibold mb-6">Now Playing Movies</h1>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {nowPlayingMovies.map((nowPlayingMovie) => (
           <SimpleMovieCard 

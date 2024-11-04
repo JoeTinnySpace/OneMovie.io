@@ -14,8 +14,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.full-viewport {
-  height: 100vh;
-  min-height: -webkit-fill-available; /* Ensures compatibility on mobile Safari */
-}
