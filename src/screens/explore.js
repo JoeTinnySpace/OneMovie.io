@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchMovies } from '../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faStar, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const STORAGE_KEYS = {
   CURRENT_INDEX: 'explore_currentIndex',
@@ -40,7 +40,7 @@ const FILTER_OPTIONS = {
     { value: '53', label: 'Thriller' },
     { value: '10752', label: 'War' },
     { value: '37', label: 'Western' }
-],
+  ],
   'vote_average.gte': [
     { value: '7', label: '7+' },
     { value: '8', label: '8+' },
@@ -58,12 +58,12 @@ const Explore = () => {
     const stored = localStorage.getItem(STORAGE_KEYS.CURRENT_MOVIES);
     return stored ? JSON.parse(stored) : [];
   });
-  
+
   const [currentIndex, setCurrentIndex] = useState(() => {
     const stored = parseInt(localStorage.getItem(STORAGE_KEYS.CURRENT_INDEX), 10);
     return !isNaN(stored) ? stored : 0;
   });
-  
+
   const [currentPage, setCurrentPage] = useState(() => {
     const stored = parseInt(localStorage.getItem(STORAGE_KEYS.CURRENT_PAGE), 10);
     return !isNaN(stored) ? stored : 1;
@@ -78,17 +78,17 @@ const Explore = () => {
       'primary_release_date.gte': ''
     };
   });
-  
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
   // Refs for managing fetch states and debouncing
   const isFetchingRef = useRef(false);
   const lastFetchTimeRef = useRef(0);
   const abortControllerRef = useRef(null);
   const queuedPageRef = useRef(null);
-  
+
   // Minimum time between fetches (in milliseconds)
   const FETCH_COOLDOWN = 500;
 
@@ -103,12 +103,14 @@ const Explore = () => {
   const filterMovies = useCallback((movieData) => {
     const skippedMovies = JSON.parse(localStorage.getItem(STORAGE_KEYS.SKIPPED_MOVIES)) || [];
     const storedMovies = JSON.parse(localStorage.getItem(STORAGE_KEYS.MY_MOVIES)) || [];
-    
+
     return movieData.filter(
       (movie) => !skippedMovies.some((skipped) => skipped.id === movie.id) &&
-                 !storedMovies.some((watched) => watched.id === movie.id)
+        !storedMovies.some((watched) => watched.id === movie.id)
     );
   }, []);
+
+
 
   const buildQueryString = useCallback((pageToFetch) => {
     const queryParams = new URLSearchParams({
@@ -162,9 +164,9 @@ const Explore = () => {
         `/discover/movie?${queryString}`,
         { signal: abortControllerRef.current.signal }
       );
-      
+
       const filteredMovies = filterMovies(movieData);
-      
+
       setMovies(prevMovies => {
         if (pageToFetch === 1) return filteredMovies;
         return [...prevMovies, ...filteredMovies];
@@ -190,7 +192,7 @@ const Explore = () => {
 
   useEffect(() => {
     fetchMoreMovies(currentPage);
-    
+
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -208,25 +210,25 @@ const Explore = () => {
     setFilters(prev => {
       const newFilters = {
         ...prev,
-        [filterKey]: filterKey === 'with_genres' 
+        [filterKey]: filterKey === 'with_genres'
           ? (prev.with_genres.includes(value)
-              ? prev.with_genres.filter(genre => genre !== value)
-              : [...prev.with_genres, value])
+            ? prev.with_genres.filter(genre => genre !== value)
+            : [...prev.with_genres, value])
           : value
       };
-      
+
       // Reset page and movies when filters change
       setCurrentPage(1);
       setCurrentIndex(0);
       setMovies([]);
-      
+
       return newFilters;
     });
   }, []);
 
   const handleNextMovie = useCallback(() => {
     if (loading) return;
-    
+
     if (currentIndex < movies.length - 1) {
       setCurrentIndex(prevIndex => prevIndex + 1);
     } else if (!isFetchingRef.current) {
@@ -236,19 +238,36 @@ const Explore = () => {
 
   const handlePreviousMovie = useCallback(() => {
     if (loading) return;
-    
+
     if (currentIndex > 0) {
       setCurrentIndex(prevIndex => prevIndex - 1);
     }
   }, [currentIndex, loading]);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowRight') {
+        handleNextMovie();
+      } else if (event.key === 'ArrowLeft') {
+        handlePreviousMovie();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleNextMovie, handlePreviousMovie]);
+
+
   const handleMovieAction = useCallback((action) => {
     if (loading || movies.length === 0 || currentIndex >= movies.length) return;
-    
+
     const currentMovie = movies[currentIndex];
     const storageKey = action === 'skip' ? STORAGE_KEYS.SKIPPED_MOVIES : STORAGE_KEYS.MY_MOVIES;
     const storedMovies = JSON.parse(localStorage.getItem(storageKey)) || [];
-    
+
     if (!storedMovies.some((movie) => movie.id === currentMovie.id)) {
       localStorage.setItem(storageKey, JSON.stringify([...storedMovies, currentMovie]));
     }
@@ -271,142 +290,154 @@ const Explore = () => {
   if (movies.length === 0) return <div className="text-center">No movies available.</div>;
 
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
-      
-
-      
+    <div className="h-full w-full flex flex-col justify-center items-center text-gray-900 dark:text-gray-100 relative">
       {movies.length > 0 && currentIndex < movies.length && (
-        <div className="relative w-auto h-[70vh] flex items-center">
-
-{isFilterOpen && (
-        <div className="absolute top-16 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-10 max-w-sm w-full">
-          <h3 className="text-lg font-bold mb-4">Filters</h3>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block mb-2">Sort By</label>
-              <select
-                value={filters.sort_by}
-                onChange={(e) => handleFilterChange('sort_by', e.target.value)}
-                className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
-              >
-                {FILTER_OPTIONS.sort_by.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block mb-2">Genres</label>
-              <div className="flex flex-wrap gap-2">
-                {FILTER_OPTIONS.with_genres.map(option => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleFilterChange('with_genres', option.value)}
-                    className={`px-3 py-1 rounded-full text-sm ${
-                      filters.with_genres.includes(option.value)
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 dark:bg-gray-700'
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block mb-2">Minimum Rating</label>
-              <select
-                value={filters['vote_average.gte']}
-                onChange={(e) => handleFilterChange('vote_average.gte', e.target.value)}
-                className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
-              >
-                <option value="">Any Rating</option>
-                {FILTER_OPTIONS['vote_average.gte'].map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block mb-2">Release Year</label>
-              <select
-                value={filters['primary_release_date.gte']}
-                onChange={(e) => handleFilterChange('primary_release_date.gte', e.target.value)}
-                className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
-              >
-                <option value="">Any Year</option>
-                {FILTER_OPTIONS['primary_release_date.gte'].map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-      )}
-
+        <div className="relative w-auto h-[70vh] flex items-center ">
           <img
             src={`https://image.tmdb.org/t/p/original${movies[currentIndex].poster_path}`}
             alt={movies[currentIndex].title}
-            className="object-cover max-w-full h-full"
+            className="object-cover max-w-full h-full rounded-3xl"
             draggable="false"
           />
 
-          <Link to={`/movie/${movies[currentIndex].id}`}>
-            <div className="absolute text-lg top-5 left-2 bg-yellow-600 text-white px-2 rounded-full">
-              {movies[currentIndex].title} ( { movies[currentIndex].release_date.slice(0,4) } )
-            </div>
-          </Link>
+          <div className="absolute top-5 left-2 right-2 flex justify-between bg-blue-100 shadow-lg p-2 rounded-lg">
 
-          <div className="absolute text-lg top-5 right-2 bg-yellow-600 text-white px-2 rounded-full">
-            {Math.round(movies[currentIndex].vote_average * 10) / 10} <FontAwesomeIcon icon={faStar} />
+            <Link to={`/movie/${movies[currentIndex].id}`} className="text-lg text-gray-800">
+              {movies[currentIndex].title} ({movies[currentIndex].release_date.slice(0, 4)})
+            </Link>
+
+            <div className="flex justify-center text-center text-lg text-gray-800 pl-3">
+              <span className="flex items-center">
+                {Math.round(movies[currentIndex].vote_average * 10) / 10}
+                <FontAwesomeIcon icon={faStar} className="ml-1" />
+              </span>
+            </div>
           </div>
 
-          
+
+          {isFilterOpen && (
+            <div className="absolute top-16 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-10 max-w-sm w-full">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-bold">Filters</h3>
+                <button onClick={() => setIsFilterOpen(false)} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
+                  <FontAwesomeIcon icon={faTimes} className="ml-1" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block mb-2">Sort By</label>
+                  <select
+                    value={filters.sort_by}
+                    onChange={(e) => handleFilterChange('sort_by', e.target.value)}
+                    className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+                  >
+                    {FILTER_OPTIONS.sort_by.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block mb-2">Genres</label>
+                  <div className="flex flex-wrap gap-2">
+                    {FILTER_OPTIONS.with_genres.map(option => (
+                      <button
+                        key={option.value}
+                        onClick={() => handleFilterChange('with_genres', option.value)}
+                        className={`px-3 py-1 rounded-full text-sm ${filters.with_genres.includes(option.value)
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block mb-2">Minimum Rating</label>
+                  <select
+                    value={filters['vote_average.gte']}
+                    onChange={(e) => handleFilterChange('vote_average.gte', e.target.value)}
+                    className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+                  >
+                    <option value="">Any Rating</option>
+                    {FILTER_OPTIONS['vote_average.gte'].map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block mb-2">Release Year</label>
+                  <select
+                    value={filters['primary_release_date.gte']}
+                    onChange={(e) => handleFilterChange('primary_release_date.gte', e.target.value)}
+                    className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+                  >
+                    <option value="">Any Year</option>
+                    {FILTER_OPTIONS['primary_release_date.gte'].map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
 
           <button
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white p-6 rounded-full disabled:opacity-50"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white p-4 rounded-full transition-transform duration-200 hover:bg-gray-600 hover:scale-105 disabled:opacity-50"
             onClick={handlePreviousMovie}
             disabled={currentIndex === 0 || loading}
           >
             &larr;
           </button>
           <button
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white p-6 rounded-full disabled:opacity-50"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white p-4 rounded-full transition-transform duration-200 hover:bg-gray-600 hover:scale-105 disabled:opacity-50"
             onClick={handleNextMovie}
             disabled={loading}
           >
             &rarr;
           </button>
 
-          <button
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="absolute bottom-4 left-10 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-2 rounded-full ">
-            {isFilterOpen ? <FontAwesomeIcon icon={faFilter}/> :  <FontAwesomeIcon icon={faFilter}/>}
-          </button>
+          {/* Button Container */}
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 w-full px-4 rounded-full shadow-md">
 
-          <button
-            className="absolute bottom-4 left-28 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded-full disabled:opacity-50"
-            onClick={excludeMovie}
-            disabled={loading}
-          >
-            Skip
-          </button>
 
-          <button
-            className="absolute bottom-4 right-[-3.5rem] transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded-full disabled:opacity-50"
-            onClick={saveToMyMoviesList}
-            disabled={loading}
-          >
-            Add to My Movies
-          </button>
+            <button
+              className="bg-red-500 text-white flex-1 py-2 rounded-full flex items-center justify-center transition-transform transform hover:scale-105"
+              onClick={excludeMovie}
+              disabled={loading}
+            >
+              <FontAwesomeIcon icon={faTimes} className="mr-1" />
+              Skip
+            </button>
+
+            <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="bg-indigo-600 text-white flex-1 py-2 rounded-full flex items-center justify-center transition-transform transform hover:scale-105 z-30"
+            >
+              <FontAwesomeIcon icon={faFilter} className="mr-1" />
+              Filter
+            </button>
+
+            <button
+              className="bg-green-500 text-white flex-1 py-2 rounded-full flex items-center justify-center transition-transform transform hover:scale-105"
+              onClick={saveToMyMoviesList}
+              disabled={loading}
+            >
+              <FontAwesomeIcon icon={faPlus} className="mr-1" />
+              My List
+            </button>
+          </div>
         </div>
       )}
       {loading && <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-gray-500">Loading more movies...</div>}

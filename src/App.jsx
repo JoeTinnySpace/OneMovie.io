@@ -12,9 +12,10 @@ const MovieApp = () => {
 
   return (
     <Router>
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen ">
+    <div className="background-image"></div>
       <main className="flex-grow flex justify-center items-center px-4 py-8 md:px-8 lg:px-16">
-        <div className="w-full max-w-3xl">  
+        <div className="w-auto max-w-3xl">  
           <Routes>
             <Route path="/" element={ <Explore/>  } />
             <Route path="/lists" element={ <Lists/> } />

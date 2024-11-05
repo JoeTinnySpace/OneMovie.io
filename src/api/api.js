@@ -36,3 +36,21 @@ export const fetchMovieDetails = async (id) => {
     throw error; // Rethrow error for further handling
   }
 }
+
+
+// movie/1051896/videos?language=en-US
+export const fetchMovieVideos = async (id) => {
+  const endpoint = `/movie/${id}/videos`
+  try {
+    const response = await axios.get(`${BASE_URL}${endpoint}`, {
+      params: {
+        api_key: API_KEY,
+        language: 'en-US'
+      },
+    });
+    return response.data.results; // Return only the results array
+  } catch (error) {
+    console.error(`Error fetching movies from ${endpoint}:`, error);
+    throw error; // Rethrow error for further handling
+  }
+}
