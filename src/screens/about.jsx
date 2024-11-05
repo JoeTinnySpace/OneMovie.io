@@ -1,7 +1,10 @@
 
 const About = () => {
 return(
-    <div>About</div>
+    <div class="loading-container">
+  <div class="golden-ring"></div>
+  <p>Loading...</p>
+</div>
 
 );
 };
