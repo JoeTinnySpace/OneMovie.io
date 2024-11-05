@@ -43,7 +43,7 @@ const Lists = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8">
+    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8 rounded-3xl">
       <div className="space-y-10">
 
         {/* Error Message */}

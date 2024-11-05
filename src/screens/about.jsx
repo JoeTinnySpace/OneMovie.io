@@ -41,7 +41,7 @@ const About = () => {
 
   return (
     <div className='dark'>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 rounded-3xl">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">OneMovieDiscover</h1>
 
