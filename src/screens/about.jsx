@@ -43,7 +43,7 @@ const About = () => {
     <div className='dark'>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">OneMovie.io</h1>
+          <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">OneMovieDiscover</h1>
 
           {/* Developer Details */}
           <section className="mb-8">
