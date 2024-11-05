@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieDetails , fetchMovieVideos } from '../api/api';
+import { fetchMovieDetails, fetchMovieVideos } from '../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay   } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 const imdb_link = 'https://www.imdb.com/title/'
 const youtube_link = 'https://www.youtube.com/watch?v='
@@ -15,7 +15,7 @@ const MovieDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [movieVideos, setMovieVideos] = useState(null);
-  
+
   useEffect(() => {
     const getMovieDetails = async () => {
       try {
@@ -41,7 +41,7 @@ const MovieDetails = () => {
     return `${hours}h ${mins}m`;
   };
 
-    
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -91,8 +91,8 @@ const MovieDetails = () => {
 
   const streaming_link = movie.homepage;
   const trailerLinkKey = movieVideos
-  .filter(video => video.site === 'YouTube' && video.type === 'Trailer')
-  .map(video => video.key)[0]; // This will give you the id of the first matching video
+    .filter(video => video.site === 'YouTube' && video.type === 'Trailer')
+    .map(video => video.key)[0]; // This will give you the id of the first matching video
 
   const trailerLink = youtube_link + trailerLinkKey;
   const release_year = new Date(movie.release_date).getFullYear();
@@ -122,109 +122,109 @@ const MovieDetails = () => {
           </span>
         ))}
       </div>
-      {streaming_link ? 
-       <span className="flex text-gray-300 hover:text-gray-100 sm:justify-start justify-center">
+      {streaming_link ?
+        <span className="flex text-gray-300 hover:text-gray-100 sm:justify-start justify-center">
           <a href={movie.homepage} target='_blank' rel='noreferrer'>
-          Checkout streaming  <FontAwesomeIcon icon={faPlay} />
+            Checkout streaming  <FontAwesomeIcon icon={faPlay} />
           </a>
-        </span>: 
+        </span> :
         ''
-        }
+      }
 
 
-{trailerLink.length > 33 ? 
-       <div className="flex text-gray-300  hover:text-gray-100 sm:justify-start justify-center py-2">
+      {trailerLink.length > 33 ?
+        <div className="flex text-gray-300  hover:text-gray-100 sm:justify-start justify-center py-2">
           <a href={trailerLink} target='_blank' rel='noreferrer'>
-          Trailer 
+            Trailer
           </a>
-        </div>: 
+        </div> :
         ''
-        }
+      }
     </div>
   );
 
 
-      return (
-        <div className="min-h-screen py-8">
-  {/* Hero Section */}
-  <div
-    className="w-full h-80 sm:h-96 bg-cover bg-center relative mb-4 sm:mb-8 rounded-2xl"
-    style={{
-      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
-      backgroundColor: 'rgba(0,0,0,0.8)'
-    }}
-  >
-    <div className="max-w-6xl mx-auto px-4 h-full flex flex-col sm:flex-row items-center sm:items-end pb-4 sm:pb-8 rounded-2xl">
-      {/* Poster */}
-      <div className="w-40 h-60 sm:w-64 sm:h-96 bg-gray-700 rounded-lg shadow-lg mb-4 sm:mb-0">
-        <img
-          src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-          alt={movie.title}
-          className="object-cover max-w-full h-full"
-          draggable="false"
-        />
-      </div>
+  return (
+    <div className="min-h-screen py-8">
+      {/* Hero Section */}
+      <div
+        className="w-full h-80 sm:h-96 bg-cover bg-center relative mb-4 sm:mb-8 rounded-2xl"
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+          backgroundColor: 'rgba(0,0,0,0.8)'
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4 h-full flex flex-col sm:flex-row items-center sm:items-end pb-4 sm:pb-8 rounded-2xl">
+          {/* Poster */}
+          <div className="w-40 h-60 sm:w-64 sm:h-96 bg-gray-700 rounded-lg shadow-lg mb-4 sm:mb-0">
+            <img
+              src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+              alt={movie.title}
+              className="object-cover max-w-full h-full"
+              draggable="false"
+            />
+          </div>
 
-  {/* Movie Info - Displayed in Hero Section only on desktop */}
-  <div className="hidden sm:block">
+          {/* Movie Info - Displayed in Hero Section only on desktop */}
+          <div className="hidden sm:block">
             {MovieInfo}
           </div>
         </div>
       </div>
 
       {/* Movie Info - Displayed on mobile below Hero Section */}
-<div className="block sm:hidden mb-8 px-4 bg-gray-800 rounded-2xl p-4">
-  {MovieInfo}
-</div>
-
-  {/* Main Content */}
-<div className="max-w-6xl mx-auto px-4 space-y-8">
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
-    {/* Overview Section */}
-    <div className="sm:col-span-2">
-      <div className="bg-gray-800 rounded-2xl shadow p-4">
-        <h2 className="text-xl text-gray-200 sm:text-2xl font-semibold mb-4">Overview</h2>
-        <p className="text-gray-500">{movie.overview}</p>
+      <div className="block sm:hidden mb-8 px-4 bg-gray-800 rounded-2xl p-4">
+        {MovieInfo}
       </div>
-    </div>
 
-    {/* Production Details */}
-    <div>
-      <div className="bg-gray-800 rounded-2xl shadow p-4">
-        <h2 className="text-lg text-gray-200 sm:text-xl font-semibold mb-4">Production Details</h2>
-        <div className="space-y-2">
-          <div>
-            <h3 className="text-sm font-medium text-gray-300">Release Date</h3>
-            <p className="text-gray-500">
-              {new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 space-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
+          {/* Overview Section */}
+          <div className="sm:col-span-2">
+            <div className="bg-gray-800 rounded-2xl shadow p-4">
+              <h2 className="text-xl text-gray-200 sm:text-2xl font-semibold mb-4">Overview</h2>
+              <p className="text-gray-500">{movie.overview}</p>
+            </div>
           </div>
+
+          {/* Production Details */}
           <div>
-            <h3 className="text-sm font-medium text-gray-300">Production Companies</h3>
-            <ul className="mt-1 text-gray-500">
-              {movie.production_companies.map((company, index) => (
-                <li key={index}>{company.name}</li>
-              ))}
-            </ul>
+            <div className="bg-gray-800 rounded-2xl shadow p-4">
+              <h2 className="text-lg text-gray-200 sm:text-xl font-semibold mb-4">Production Details</h2>
+              <div className="space-y-2">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-300">Release Date</h3>
+                  <p className="text-gray-500">
+                    {new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-300">Production Companies</h3>
+                  <ul className="mt-1 text-gray-500">
+                    {movie.production_companies.map((company, index) => (
+                      <li key={index}>{company.name}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+
+
+        {/* Back Button */}
+        <button
+          className="mt-8 text-gray-600 dark:text-gray-300 flex items-center gap-2 hover:text-gray-100 dark:hover:text-white"
+          onClick={() => window.history.back()}
+        >
+          ← Back to Movies
+        </button>
       </div>
     </div>
-  </div>
+  );
 
-
-    
-            {/* Back Button */}
-            <button 
-              className="mt-8 text-gray-600 dark:text-gray-300 flex items-center gap-2 hover:text-gray-100 dark:hover:text-white"
-              onClick={() => window.history.back()}
-            >
-              ← Back to Movies
-            </button>
-          </div>
-        </div>
-      );
-    
 };
 
 

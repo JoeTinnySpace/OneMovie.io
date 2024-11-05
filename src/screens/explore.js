@@ -348,8 +348,8 @@ const Explore = () => {
                         key={option.value}
                         onClick={() => handleFilterChange('with_genres', option.value)}
                         className={`px-3 py-1 rounded-full text-sm ${filters.with_genres.includes(option.value)
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200 dark:bg-gray-700'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-200 dark:bg-gray-700'
                           }`}
                       >
                         {option.label}

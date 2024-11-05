@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
+const CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
+
 const About = () => {
   const [feedback, setFeedback] = useState('');
 
   // Function to send a message via Telegram bot
-  const telegramBotSendText = async (botMessage, chatId) => {
-    const botToken = '5270448407:AAHMOoN5BJ1Q5yPjZUaQ0I46qeaQCNJ-zQ8';
-    const sendTextUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&parse_mode=Markdown&text=${encodeURIComponent(botMessage)}`;
+  const telegramBotSendText = async (botMessage) => {
+    const sendTextUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&parse_mode=Markdown&text=${encodeURIComponent(botMessage)}`;
 
     try {
       const response = await fetch(sendTextUrl);
@@ -30,10 +32,10 @@ const About = () => {
   // Handler for form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
-    const chatId = '519768158'; // Replace with the chat ID you want to send to
-    if ( feedback.length > 0 ){
-      telegramBotSendText(feedback, chatId); // Send the feedback as a message
-    }else{
+    // Replace with the chat ID you want to send to
+    if (feedback.length > 0) {
+      telegramBotSendText(feedback); // Send the feedback as a message
+    } else {
       toast.info('Enter valid feedback.')
     }
     setFeedback(''); // Clear the feedback input after submission
@@ -51,7 +53,7 @@ const About = () => {
             <p className="text-gray-600 dark:text-gray-300">
               We aim to provide a seamless experience for movie enthusiasts to discover and manage their favorite films.
               <br />
-              The data is stored on your web browser cache and it never leaves your device.
+              The data is stored on your web browser cache and it never leaves your device (Except the feedback).
             </p>
           </section>
 

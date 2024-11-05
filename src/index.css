@@ -29,10 +29,13 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Ensure it's behind other content */
+  z-index: -1;
+  /* Ensure it's behind other content */
 }
 
-@media (max-width: 768px) { /* Adjust based on your mobile breakpoint */
+@media (max-width: 768px) {
+
+  /* Adjust based on your mobile breakpoint */
   .background-image {
     background-image: url('../public/assets/desktop-image.jpg');
   }
