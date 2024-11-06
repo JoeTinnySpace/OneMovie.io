@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faList, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faList, faInfoCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
   return (
@@ -14,6 +14,15 @@ function Navbar() {
       >
         <FontAwesomeIcon icon={faHome} className="text-xl mb-1" />
         <span>Home</span>
+      </NavLink>
+
+      <NavLink
+        to="/search"
+        className={({ isActive }) => `flex flex-col items-center text-sm px-4 py-2 rounded-lg border ${isActive ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-400 hover:text-blue-300 hover:border-blue-300'
+          } transition-colors duration-200`}
+      >
+        <FontAwesomeIcon icon={faSearch} className="text-xl mb-1" />
+        <span>Search</span>
       </NavLink>
 
       <NavLink

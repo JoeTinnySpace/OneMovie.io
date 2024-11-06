@@ -96,7 +96,7 @@ const MovieDetails = () => {
     const trailerLinkKey = movieVideos
       .filter(video => video.site === 'YouTube' && video.type === 'Trailer')
       .map(video => video.key)[0]; // This will give you the id of the first matching video
-    trailerLink   = youtube_link + trailerLinkKey;
+    trailerLink = youtube_link + trailerLinkKey;
   }
 
   const release_year = new Date(movie.release_date).getFullYear();
@@ -129,7 +129,7 @@ const MovieDetails = () => {
       {streaming_link ?
         <span className="flex text-gray-300 hover:text-gray-100 sm:justify-start justify-center">
           <a href={movie.homepage} target='_blank' rel='noreferrer'>
-            Checkout streaming  <FontAwesomeIcon icon={faPlay} />
+            Official website <FontAwesomeIcon icon={faPlay} />
           </a>
         </span> :
         ''
@@ -139,7 +139,7 @@ const MovieDetails = () => {
       {trailerLink.length > 33 ?
         <div className="flex text-gray-300  hover:text-gray-100 sm:justify-start justify-center py-2">
           <a href={trailerLink} target='_blank' rel='noreferrer'>
-            Trailer
+            YouTube Trailer
           </a>
         </div> :
         ''
@@ -150,6 +150,13 @@ const MovieDetails = () => {
 
   return (
     <div className="min-h-screen py-8">
+      {/* Back Button */}
+      <button
+        className="mb-8 text-gray-200 flex items-center gap-2 hover:text-gray-100 dark:hover:text-white"
+        onClick={() => window.history.back()}
+      >
+        ← Back 
+      </button>
       {/* Hero Section */}
       <div
         className="w-full h-80 sm:h-96 bg-cover bg-center relative mb-4 sm:mb-8 rounded-2xl"
@@ -218,13 +225,7 @@ const MovieDetails = () => {
 
 
 
-        {/* Back Button */}
-        <button
-          className="mt-8 text-gray-600 dark:text-gray-300 flex items-center gap-2 hover:text-gray-100 dark:hover:text-white"
-          onClick={() => window.history.back()}
-        >
-          ← Back to Movies
-        </button>
+
       </div>
     </div>
   );

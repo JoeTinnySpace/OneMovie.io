@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Navbar from './components/navbar/navbar';
+import Search from './screens/search'
 import Lists from './screens/lists'
 import Explore from './screens/explore'
 import About from './screens/about'
@@ -18,6 +19,7 @@ const MovieApp = () => {
           <div className="w-auto max-w-3xl">
             <Routes>
               <Route path="/" element={<Explore />} />
+              <Route path="/search" element={<Search />} />
               <Route path="/lists" element={<Lists />} />
               <Route path="/about" element={<About />} />
               <Route path="/movie/:id" element={<MovieDetails />} />

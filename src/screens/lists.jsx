@@ -1,10 +1,10 @@
-// src/pages/Lists.js
+
 import React, { useEffect, useState } from 'react';
 import SimpleMovieCard from '../components/movie_card_simple/simple_movie_card';
 import { fetchMovies, fetchMovieDetails } from '../api/api';
 
-const EDITORS_PICK_IDS = process.env.REACT_APP_EDITORS_PICK_IDS
-console.log(EDITORS_PICK_IDS)
+// const EDITORSPICK_MOVIE_ID_LINK = '';
+const EDITORSPICK_MOVIE_ID_LINK = 'https://raw.githubusercontent.com/JoeTinnySpace/OneMovie.io/main/editorspick.json'
 
 const Lists = () => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -35,20 +35,29 @@ const Lists = () => {
       } catch (err) {
         setLocalStorageError('Failed to load your list.');
       }
-
-      try {
-        const editorMovies = await Promise.all(
-          EDITORS_PICK_IDS.map(async (id) => await fetchMovieDetails(id))
-        );
-        setEditorMovies(editorMovies);
-      } catch (err) {
-        // console.log('error')
-      }
-
     };
 
     getMovies();
   }, []);
+
+  useEffect(() => {
+    const fetchEditorsPickIds = async () => {
+      try {
+        const response = await fetch(EDITORSPICK_MOVIE_ID_LINK); // URL to your JSON file
+        const { editorsPickIds } = await response.json();
+        const editorMovies = await Promise.all(
+          editorsPickIds.map(async (id) => await fetchMovieDetails(id))
+        );
+        setEditorMovies(editorMovies);
+      } catch (err) {
+        console.error('Failed to load Editor\'s Pick movies:', err);
+      }
+    };
+  
+    fetchEditorsPickIds();
+  }, []);
+  
+
 
   const removeFromMyMoviesList = (movieId) => {
     const updatedList = myMoviesList.filter((movie) => movie.id !== movieId);

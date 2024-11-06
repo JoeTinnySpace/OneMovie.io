@@ -54,3 +54,22 @@ export const fetchMovieVideos = async (id) => {
     throw error; // Rethrow error for further handling
   }
 }
+
+export const fetchSearchSuggestions = async (query) => {
+  const endpoint = '/search/movie';
+  try {
+    const response = await axios.get(`${BASE_URL}${endpoint}`, {
+      params: {
+        api_key: API_KEY,
+        query: query,
+        language: 'en-US',
+        page: 1,
+        include_adult: false
+      }
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error(`Error fetching search suggestions from ${endpoint}:`, error);
+    throw error;
+  }
+};
