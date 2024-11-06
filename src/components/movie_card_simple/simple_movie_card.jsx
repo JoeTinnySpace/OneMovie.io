@@ -1,4 +1,4 @@
-// src/components/movie_card/SimpleMovieCard.js
+// SimpleMovieCard.js
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faTrash } from '@fortawesome/free-solid-svg-icons';

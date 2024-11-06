@@ -1,7 +1,7 @@
-// src/api.js
+// api.js
 import axios from 'axios';
 
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY; // Make sure to have your API key in .env file
+const API_KEY = process.env.REACT_APP_TMDB_API_KEY; 
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 export const fetchMovies = async (endpoint) => {
@@ -13,10 +13,10 @@ export const fetchMovies = async (endpoint) => {
         include_adult: 'false'
       },
     });
-    return response.data.results; // Return only the results array
+    return response.data.results; 
   } catch (error) {
     console.error(`Error fetching movies from ${endpoint}:`, error);
-    throw error; // Rethrow error for further handling
+    throw error; 
   }
 };
 
@@ -30,10 +30,10 @@ export const fetchMovieDetails = async (id) => {
         language: 'en-US'
       },
     });
-    return response.data; // Return only the results array
+    return response.data; 
   } catch (error) {
     console.error(`Error fetching movies from ${endpoint}:`, error);
-    throw error; // Rethrow error for further handling
+    throw error; 
   }
 }
 
@@ -48,10 +48,10 @@ export const fetchMovieVideos = async (id) => {
         language: 'en-US'
       },
     });
-    return response.data.results; // Return only the results array
+    return response.data.results; 
   } catch (error) {
     console.error(`Error fetching movies from ${endpoint}:`, error);
-    throw error; // Rethrow error for further handling
+    throw error; 
   }
 }
 

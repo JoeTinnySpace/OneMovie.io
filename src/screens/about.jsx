@@ -8,7 +8,7 @@ const CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
 const About = () => {
   const [feedback, setFeedback] = useState('');
 
-  // Function to send a message via Telegram bot
+  // Function to send a message via Telegram bot 
   const telegramBotSendText = async (botMessage) => {
     const sendTextUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&parse_mode=Markdown&text=${encodeURIComponent(botMessage)}`;
 
@@ -16,25 +16,24 @@ const About = () => {
       const response = await fetch(sendTextUrl);
 
       if (response.ok) {
-        toast.success('Feedback sent successfully!'); // Show success toast
+        toast.success('Feedback sent successfully!'); //  success toast
       } else {
-        toast.error('Error sending feedback. Please try again.'); // Show error toast
+        toast.error('Error sending feedback. Please try again.'); //  error toast
       }
     } catch (error) {
-      toast.error('Network error. Please check your connection.'); // Show network error toast
+      toast.error('Network error. Please check your connection.'); //  network error toast
     }
   };
 
   // Handler for form submission
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    // Replace with the chat ID you want to send to
+    e.preventDefault();
     if (feedback.length > 0) {
       telegramBotSendText(feedback); // Send the feedback as a message
     } else {
       toast.info('Enter valid feedback.')
     }
-    setFeedback(''); // Clear the feedback input after submission
+    setFeedback(''); // Clear feedback input 
   };
 
   return (

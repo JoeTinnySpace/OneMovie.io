@@ -95,7 +95,7 @@ const MovieDetails = () => {
   if (movieVideos.length) {
     const trailerLinkKey = movieVideos
       .filter(video => video.site === 'YouTube' && video.type === 'Trailer')
-      .map(video => video.key)[0]; // This will give you the id of the first matching video
+      .map(video => video.key)[0]; // id of the first matching trailer
     trailerLink = youtube_link + trailerLinkKey;
   }
 
@@ -114,10 +114,6 @@ const MovieDetails = () => {
           <span className="mr-1">⏱</span>
           <span>{formatRuntime(movie.runtime)}</span>
         </div>
-        {/* <div className="flex items-center">
-          <span className="mr-1">📅</span>
-          <span>{release_year}</span>
-        </div> */}
       </div>
       <div className="flex  flex-wrap justify-center sm:justify-start gap-2 mb-4">
         {movie.genres.map((genre) => (

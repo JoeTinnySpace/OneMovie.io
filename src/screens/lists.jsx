@@ -43,7 +43,7 @@ const Lists = () => {
   useEffect(() => {
     const fetchEditorsPickIds = async () => {
       try {
-        const response = await fetch(EDITORSPICK_MOVIE_ID_LINK); // URL to your JSON file
+        const response = await fetch(EDITORSPICK_MOVIE_ID_LINK); 
         const { editorsPickIds } = await response.json();
         const editorMovies = await Promise.all(
           editorsPickIds.map(async (id) => await fetchMovieDetails(id))
