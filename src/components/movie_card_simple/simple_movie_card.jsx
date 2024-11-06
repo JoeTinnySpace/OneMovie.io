@@ -11,7 +11,7 @@ const SimpleMovieCard = ({ movie, onRemove }) => {
       {/* Poster Image */}
       <Link to={`/movie/${movie.id}`} className="block">
         <img
-          src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
           alt={movie.title}
           className="w-full h-60 object-cover rounded-t-lg"
         />

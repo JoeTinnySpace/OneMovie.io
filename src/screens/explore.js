@@ -294,22 +294,22 @@ const Explore = () => {
       {movies.length > 0 && currentIndex < movies.length && (
         <div className="relative w-auto h-[70vh] flex items-center ">
           <img
-            src={`https://image.tmdb.org/t/p/original${movies[currentIndex].poster_path}`}
+            src={`https://image.tmdb.org/t/p/w500${movies[currentIndex].poster_path}`}
             alt={movies[currentIndex].title}
             className="object-cover max-w-full h-full rounded-3xl"
             draggable="false"
           />
 
-          <div className="absolute top-5 left-2 right-2 flex justify-between bg-blue-100 shadow-lg p-2 rounded-lg">
+          <div className="absolute top-5 left-2 right-2 flex justify-between shadow-lg p-2 rounded-lg">
 
-            <Link to={`/movie/${movies[currentIndex].id}`} className="text-lg text-gray-800">
+            <Link to={`/movie/${movies[currentIndex].id}`} className="text-lg text-gray-800 bg-blue-100  rounded-lg">
               {movies[currentIndex].title} ({movies[currentIndex].release_date.slice(0, 4)})
             </Link>
 
-            <div className="flex justify-center text-center text-lg text-gray-800 pl-3">
+            <div className="flex justify-center text-center text-lg text-gray-800 pl-3 bg-blue-100  rounded-lg">
               <span className="flex items-center">
                 {Math.round(movies[currentIndex].vote_average * 10) / 10}
-                <FontAwesomeIcon icon={faStar} className="ml-1" />
+                <FontAwesomeIcon icon={faStar} className="ml-1 text-yellow-600" />
               </span>
             </div>
           </div>

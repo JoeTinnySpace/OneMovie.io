@@ -22,8 +22,8 @@ const MovieDetails = () => {
         setIsLoading(true);
         setError(null);
         const movieData = await fetchMovieDetails(id);
-        const movieVideos = await fetchMovieVideos(id);
-        setMovieVideos(movieVideos);
+        const movieVideosData = await fetchMovieVideos(id);
+        setMovieVideos(movieVideosData);
         setMovie(movieData);
       } catch (error) {
         setError(error.message);
@@ -90,11 +90,15 @@ const MovieDetails = () => {
   }
 
   const streaming_link = movie.homepage;
-  const trailerLinkKey = movieVideos
-    .filter(video => video.site === 'YouTube' && video.type === 'Trailer')
-    .map(video => video.key)[0]; // This will give you the id of the first matching video
+  var trailerLink = '';
 
-  const trailerLink = youtube_link + trailerLinkKey;
+  if (movieVideos.length) {
+    const trailerLinkKey = movieVideos
+      .filter(video => video.site === 'YouTube' && video.type === 'Trailer')
+      .map(video => video.key)[0]; // This will give you the id of the first matching video
+    trailerLink   = youtube_link + trailerLinkKey;
+  }
+
   const release_year = new Date(movie.release_date).getFullYear();
 
   const MovieInfo = (
@@ -150,7 +154,7 @@ const MovieDetails = () => {
       <div
         className="w-full h-80 sm:h-96 bg-cover bg-center relative mb-4 sm:mb-8 rounded-2xl"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url(https://image.tmdb.org/t/p/w780${movie.backdrop_path})`,
           backgroundColor: 'rgba(0,0,0,0.8)'
         }}
       >
@@ -158,7 +162,7 @@ const MovieDetails = () => {
           {/* Poster */}
           <div className="w-40 h-60 sm:w-64 sm:h-96 bg-gray-700 rounded-lg shadow-lg mb-4 sm:mb-0">
             <img
-              src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
               alt={movie.title}
               className="object-cover max-w-full h-full"
               draggable="false"
