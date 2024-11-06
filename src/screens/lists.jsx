@@ -1,7 +1,10 @@
 // src/pages/Lists.js
 import React, { useEffect, useState } from 'react';
 import SimpleMovieCard from '../components/movie_card_simple/simple_movie_card';
-import { fetchMovies } from '../api/api';
+import { fetchMovies, fetchMovieDetails } from '../api/api';
+
+const EDITORS_PICK_IDS = process.env.REACT_APP_EDITORS_PICK_IDS
+console.log(EDITORS_PICK_IDS)
 
 const Lists = () => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -9,6 +12,7 @@ const Lists = () => {
   const [myMoviesList, setMyMoviesList] = useState([]);
   const [error, setError] = useState(null);
   const [localStorageError, setLocalStorageError] = useState(null);
+  const [editorMovies, setEditorMovies] = useState([]);
 
   useEffect(() => {
     const getMovies = async () => {
@@ -31,6 +35,16 @@ const Lists = () => {
       } catch (err) {
         setLocalStorageError('Failed to load your list.');
       }
+
+      try {
+        const editorMovies = await Promise.all(
+          EDITORS_PICK_IDS.map(async (id) => await fetchMovieDetails(id))
+        );
+        setEditorMovies(editorMovies);
+      } catch (err) {
+        // console.log('error')
+      }
+
     };
 
     getMovies();
@@ -66,6 +80,23 @@ const Lists = () => {
             </div>
           )}
         </div>
+
+
+        {/* Editor's Pick Section */}
+        <div>
+          <h1 className="text-3xl font-semibold mb-4 border-b border-gray-700 pb-2">Editor's Pick</h1>
+          {editorMovies.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {editorMovies.map((editorMovie) => (
+                <SimpleMovieCard key={editorMovie.id} movie={editorMovie} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-400">Guess what? The Editor's too busy binge-watching
+             TV shows to give you movie picks right now. Priorities, right? 😜.</p>
+          )}
+        </div>
+
 
         {/* Now Playing Section */}
         <div>
