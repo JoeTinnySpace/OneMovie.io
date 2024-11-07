@@ -1,7 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieDetails, fetchMovieVideos } from '../api/api';
+import { fetchMovieDetails, fetchMovieVideos, fetchSimilarMovies } from '../api/api';
+import SimpleMovieCard from '../components/movie_card_simple/simple_movie_card'
+import { LoadingMovie } from '../components/loading_movies'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,6 +17,7 @@ const MovieDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [movieVideos, setMovieVideos] = useState(null);
+  const [similarMovies, setSimilarMovies] = useState(null);
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -23,8 +26,10 @@ const MovieDetails = () => {
         setError(null);
         const movieData = await fetchMovieDetails(id);
         const movieVideosData = await fetchMovieVideos(id);
+        const similarMoviesData = await fetchSimilarMovies(id);
         setMovieVideos(movieVideosData);
         setMovie(movieData);
+        setSimilarMovies(similarMoviesData);
       } catch (error) {
         setError(error.message);
         console.error("Failed to fetch movie details:", error);
@@ -44,11 +49,8 @@ const MovieDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">Loading movie details...</p>
-        </div>
+      <div className="min-h-auto flex items-center justify-center">
+        <LoadingMovie message={'Loading movie details...'} />
       </div>
     );
   }
@@ -73,9 +75,9 @@ const MovieDetails = () => {
   }
   if (!movie) {
     return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl font-bold text-gray-300 dark:text-white mb-4">
             Movie Not Found
           </h1>
           <button
@@ -151,7 +153,7 @@ const MovieDetails = () => {
         className="mb-8 text-gray-200 flex items-center gap-2 hover:text-gray-100 dark:hover:text-white"
         onClick={() => window.history.back()}
       >
-        ← Back 
+        ← Back
       </button>
       {/* Hero Section */}
       <div
@@ -198,7 +200,7 @@ const MovieDetails = () => {
           {/* Production Details */}
           <div>
             <div className="bg-gray-800 rounded-2xl shadow p-4">
-              <h2 className="text-lg text-gray-200 sm:text-xl font-semibold mb-4">Production Details</h2>
+              <h2 className="text-xl text-gray-200 sm:text-2xl font-semibold mb-4">Production Details</h2>
               <div className="space-y-2">
                 <div>
                   <h3 className="text-sm font-medium text-gray-300">Release Date</h3>
@@ -219,10 +221,24 @@ const MovieDetails = () => {
           </div>
         </div>
 
-
-
+        {/* TODO movie/{movie_id}/similar */}
+        {/* similarMovies */}
+        <div className="bg-gray-800 rounded-2xl shadow p-4">
+          <h1 className="text-xl text-gray-200 sm:text-2xl font-semibold mb-4">Similar</h1>
+          {similarMovies.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {similarMovies.map((similarMovie) => (
+                <SimpleMovieCard key={similarMovie.id} movie={similarMovie} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-400"></p>
+          )}
+        </div>
 
       </div>
+
+
     </div>
   );
 

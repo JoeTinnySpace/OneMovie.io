@@ -73,3 +73,20 @@ export const fetchSearchSuggestions = async (query) => {
     throw error;
   }
 };
+
+//
+export const fetchSimilarMovies = async (id) => {
+  const endpoint = `/movie/${id}/similar`
+  try {
+    const response = await axios.get(`${BASE_URL}${endpoint}`, {
+      params: {
+        api_key: API_KEY,
+        language: 'en-US'
+      },
+    });
+    return response.data.results; 
+  } catch (error) {
+    console.error(`Error fetching movies from ${endpoint}:`, error);
+    throw error; 
+  }
+}

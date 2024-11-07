@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { fetchMovies } from '../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faStar, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { LoadingMovie } from '../components/loading_movies'
 
 const STORAGE_KEYS = {
   CURRENT_INDEX: 'explore_currentIndex',
@@ -440,7 +441,9 @@ const Explore = () => {
           </div>
         </div>
       )}
-      {loading && <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-gray-500">Loading more movies...</div>}
+      {loading &&
+        <LoadingMovie message={'Loading more Movies...'}/>
+      }
     </div>
   );
 };

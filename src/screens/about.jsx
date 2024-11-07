@@ -16,7 +16,7 @@ const About = () => {
       const response = await fetch(sendTextUrl);
 
       if (response.ok) {
-        toast.success('Feedback sent successfully!'); //  success toast
+        toast.success('Feedback Recieved, Thank You !'); //  success toast
       } else {
         toast.error('Error sending feedback. Please try again.'); //  error toast
       }
