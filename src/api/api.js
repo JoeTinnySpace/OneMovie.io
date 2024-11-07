@@ -5,6 +5,7 @@ const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY
 const BASE_URL = 'https://api.themoviedb.org/3';
 const OMDB_BASE_URL = 'http://www.omdbapi.com/'
+// const IMDB_BASE_URL = 'https://www.imdb.com/title/'
 
 export const fetchMovies = async (endpoint) => {
   try {
@@ -95,20 +96,27 @@ export const fetchSimilarMovies = async (id) => {
 
 // http://www.omdbapi.com/?i=tt3896198&apikey=fcdf483
 export const fetchOMDBData = async (imdb_id) => {
-  
   const endpoint = `?i=${imdb_id}&apikey=${OMDB_KEY}`;
-  console.log(endpoint)
+  // console.log(endpoint)
   try {
     const response = await axios.get(`${OMDB_BASE_URL}${endpoint}`, {
-      // params: {
-      //   api_key: API_KEY,
-      //   language: 'en-US'
-      // },
+  
     });
-    console.log(response)
     return response.data; 
   } catch (error) {
-    console.error(`Error fetching movies from ${endpoint}:`, error);
-    throw error; 
   }
 }
+
+//x path imdb rating on https://www.imdb.com/title/imdb_id/
+// // /html/body/div[2]/main/div/section[1]/section/div[3]/section/section/div[3]/div[2]/div[2]/div[1]/div/div[1]/a/span/div/div[2]/div[1]/span[1]
+// export const fetchIMDBRatig = async (imdb_id) => {
+//   const endpoint = `/${imdb_id}`;
+//   console.log(endpoint)
+//   try {
+//     const response = await axios.get(`${IMDB_BASE_URL}${endpoint}`, {
+  
+//     });
+//     return response.data; 
+//   } catch (error) {
+//   }
+// }

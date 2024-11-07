@@ -32,10 +32,15 @@ const MovieDetails = () => {
         setMovie(movieData);
         setSimilarMovies(similarMoviesData);
 
+        try{
         if (movieData) {
           const omdbData = await fetchOMDBData(movieData.imdb_id);
           setOmdbImdbData(omdbData);
         }
+      }catch{
+        return;
+      }
+
       } catch (error) {
         setError(error.message);
         console.error("Failed to fetch movie details:", error);
@@ -234,12 +239,16 @@ const MovieDetails = () => {
                   </p>
                 </div>
                 {/* Directed by */}
+                { omdbImdbData?
                 <div>
                   <h3 className="text-sm font-medium text-gray-300">Directed by</h3>
                   <p className="text-gray-500">
                     {omdbImdbData.Director}
                   </p>
                 </div>
+                :
+                <></>
+}
 
 
                 {/* Production Companies */}
