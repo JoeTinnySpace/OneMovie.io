@@ -116,7 +116,7 @@ const About = () => {
            {/* Reset Buttons Section */}
            <section className="mt-8 border-y-[1px] p-4 border-gray-300">
             <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">App Settings</h2>
-            <p className='text-red-600'>Warning! This will delete your app data</p>
+            <p className='text-red-600'>Warning! This will delete the OneMovieDiscover app data</p>
             <br />
             <div className="flex space-x-4">
               <button
