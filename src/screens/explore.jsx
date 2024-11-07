@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchMovies } from '../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -290,22 +290,25 @@ const Explore = () => {
   if (error) return <div className="text-center text-red-500">{error}</div>;
   if (movies.length === 0) return <div className="text-center">No movies available.</div>;
 
+
   return (
     // main poster view 
     <div className="h-full w-full flex flex-center justify-center items-center text-gray-900 dark:text-gray-100 relative">
       {movies.length > 0 && currentIndex < movies.length && (
         <div className="relative max-w-full h-[70vh] flex items-center ">
+          <Suspense fallback={<LoadingMovie message={'Loading more Movies...'}/>} >
           <img
             src={`https://image.tmdb.org/t/p/w500${movies[currentIndex].poster_path}`}
             alt={movies[currentIndex].title}
             className="object-cover max-w-full h-full rounded-3xl"
             draggable="false"
           />
+          </Suspense>
 
-        {/* poster title and raating  */}
+          {/* poster title and raating  */}
           <div className="absolute top-5 left-2 right-2 flex justify-between shadow-lg p-2 rounded-lg">
 
-            <Link to={`/movie/${movies[currentIndex].id}`} className="text-lg text-gray-800 bg-blue-100  rounded-lg">
+            <Link to={`/movie/${movies[currentIndex].id}`} className="text-lg text-gray-800 bg-blue-100  rounded-lg px-2">
               {movies[currentIndex].title} ({movies[currentIndex].release_date.slice(0, 4)})
             </Link>
 
@@ -317,7 +320,7 @@ const Explore = () => {
             </div>
           </div>
 
-        {/* Filter box */}
+          {/* Filter box */}
           {isFilterOpen && (
             <div className="absolute top-16 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-10 max-w-sm w-full">
               <div className="flex justify-between items-center mb-4">
