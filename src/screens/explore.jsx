@@ -248,27 +248,6 @@ const Explore = () => {
     }
   }, [currentIndex, loading]);
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'ArrowRight') {
-        handleNextMovie();
-      } else if (event.key === 'ArrowLeft') {
-        handlePreviousMovie();
-      }else if (event.key === 'ArrowUp'){
-        excludeMovie();
-      }else if (event.key === 'ArrowDown'){
-        saveToMyMoviesList();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleNextMovie, handlePreviousMovie]);
-
-
   const handleMovieAction = useCallback((action) => {
     if (loading || movies.length === 0 || currentIndex >= movies.length) return;
 
@@ -291,9 +270,30 @@ const Explore = () => {
     setCurrentIndex(prevIndex => Math.max(0, prevIndex));
   }, [movies, currentIndex, loading]);
 
-
   const excludeMovie = useCallback(() => handleMovieAction('skip'), [handleMovieAction]);
   const saveToMyMoviesList = useCallback(() => handleMovieAction('save'), [handleMovieAction]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowRight') {
+        handleNextMovie();
+      } else if (event.key === 'ArrowLeft') {
+        handlePreviousMovie();
+      }else if (event.key === 'ArrowUp'){
+        excludeMovie();
+      }else if (event.key === 'ArrowDown'){
+        saveToMyMoviesList();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleNextMovie, handlePreviousMovie , excludeMovie , saveToMyMoviesList]);
+
+
 
   if (error) return <div className="text-center text-red-500">{error}</div>;
   if (movies.length === 0) return (

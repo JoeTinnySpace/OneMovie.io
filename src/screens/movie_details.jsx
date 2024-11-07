@@ -32,14 +32,14 @@ const MovieDetails = () => {
         setMovie(movieData);
         setSimilarMovies(similarMoviesData);
 
-        try{
-        if (movieData) {
-          const omdbData = await fetchOMDBData(movieData.imdb_id);
-          setOmdbImdbData(omdbData);
+        try {
+          if (movieData) {
+            const omdbData = await fetchOMDBData(movieData.imdb_id);
+            setOmdbImdbData(omdbData);
+          }
+        } catch {
+          console.log(`Couldn't fetch from OMDB API`);
         }
-      }catch{
-        return;
-      }
 
       } catch (error) {
         setError(error.message);
@@ -50,7 +50,7 @@ const MovieDetails = () => {
     };
     getMovieDetails();
   }, [id]);
- 
+
 
   const formatRuntime = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -123,7 +123,7 @@ const MovieDetails = () => {
       <p className="text-gray-300 text-sm sm:text-lg italic mb-4">{movie.tagline}</p>
       <div className="flex justify-center sm:justify-start items-center gap-4 sm:gap-6 mb-4">
 
-{/* if omdb up ? omdb api : tmdb */}
+        {/* if omdb up ? omdb api : tmdb */}
         {omdbImdbData ?
           <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
             <span className="text-yellow-400 mr-1">★</span>
@@ -131,7 +131,7 @@ const MovieDetails = () => {
             {/* endpoint */}
             <span className='text-gray-500 pl-1'> ({omdbImdbData.imdbVotes})</span>
           </a>
-  
+
           :
 
           <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
@@ -231,7 +231,7 @@ const MovieDetails = () => {
             <div className="bg-gray-800 rounded-2xl shadow p-4">
               <h2 className="text-xl text-gray-200 sm:text-2xl font-semibold mb-4">Production Details</h2>
               <div className="space-y-2">
-              {/* Release Date */}
+                {/* Release Date */}
                 <div>
                   <h3 className="text-sm font-medium text-gray-300">Release Date</h3>
                   <p className="text-gray-500">
@@ -239,16 +239,16 @@ const MovieDetails = () => {
                   </p>
                 </div>
                 {/* Directed by */}
-                { omdbImdbData?
-                <div>
-                  <h3 className="text-sm font-medium text-gray-300">Directed by</h3>
-                  <p className="text-gray-500">
-                    {omdbImdbData.Director}
-                  </p>
-                </div>
-                :
-                <></>
-}
+                {omdbImdbData ?
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-300">Directed by</h3>
+                    <p className="text-gray-500">
+                      {omdbImdbData.Director}
+                    </p>
+                  </div>
+                  :
+                  <></>
+                }
 
 
                 {/* Production Companies */}

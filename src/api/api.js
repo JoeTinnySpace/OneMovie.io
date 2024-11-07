@@ -102,6 +102,7 @@ export const fetchOMDBData = async (imdb_id) => {
     const response = await axios.get(`${OMDB_BASE_URL}${endpoint}`);
     return response.data; 
   } catch (error) {
+    console.log('Error in OMDB API')
   }
 }
 
