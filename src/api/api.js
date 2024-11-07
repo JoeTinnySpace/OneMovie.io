@@ -2,7 +2,9 @@
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY; 
+const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY
 const BASE_URL = 'https://api.themoviedb.org/3';
+const OMDB_BASE_URL = 'http://www.omdbapi.com/'
 
 export const fetchMovies = async (endpoint) => {
   try {
@@ -85,6 +87,26 @@ export const fetchSimilarMovies = async (id) => {
       },
     });
     return response.data.results; 
+  } catch (error) {
+    console.error(`Error fetching movies from ${endpoint}:`, error);
+    throw error; 
+  }
+}
+
+// http://www.omdbapi.com/?i=tt3896198&apikey=fcdf483
+export const fetchOMDBData = async (imdb_id) => {
+  
+  const endpoint = `?i=${imdb_id}&apikey=${OMDB_KEY}`;
+  console.log(endpoint)
+  try {
+    const response = await axios.get(`${OMDB_BASE_URL}${endpoint}`, {
+      // params: {
+      //   api_key: API_KEY,
+      //   language: 'en-US'
+      // },
+    });
+    console.log(response)
+    return response.data; 
   } catch (error) {
     console.error(`Error fetching movies from ${endpoint}:`, error);
     throw error; 

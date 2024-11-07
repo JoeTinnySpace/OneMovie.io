@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieDetails, fetchMovieVideos, fetchSimilarMovies } from '../api/api';
+import { fetchMovieDetails, fetchMovieVideos, fetchSimilarMovies, fetchOMDBData } from '../api/api';
 import SimpleMovieCard from '../components/movie_card_simple/simple_movie_card'
 import { LoadingMovie } from '../components/loading_movies'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +18,7 @@ const MovieDetails = () => {
   const [error, setError] = useState(null);
   const [movieVideos, setMovieVideos] = useState(null);
   const [similarMovies, setSimilarMovies] = useState(null);
+  const [omdbImdbData, setOmdbImdbData] = useState(null);
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -30,6 +31,11 @@ const MovieDetails = () => {
         setMovieVideos(movieVideosData);
         setMovie(movieData);
         setSimilarMovies(similarMoviesData);
+
+        if (movieData) {
+          const omdbData = await fetchOMDBData(movieData.imdb_id);
+          setOmdbImdbData(omdbData);
+        }
       } catch (error) {
         setError(error.message);
         console.error("Failed to fetch movie details:", error);
@@ -39,6 +45,7 @@ const MovieDetails = () => {
     };
     getMovieDetails();
   }, [id]);
+ 
 
   const formatRuntime = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -57,12 +64,12 @@ const MovieDetails = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl font-bold text-gray-300 dark:text-white mb-4">
             Failed to load movie
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">{error}</p>
+          <p className="text-gray-500 dark:text-gray-300 mb-4">{error}</p>
           <button
             onClick={() => window.history.back()}
             className="text-blue-600 dark:text-blue-400 hover:underline"
@@ -103,15 +110,32 @@ const MovieDetails = () => {
 
   const release_year = new Date(movie.release_date).getFullYear();
 
+
   const MovieInfo = (
+    // movie details
     <div className="text-white text-center sm:text-left sm:pl-8">
       <h1 className="text-2xl sm:text-4xl font-bold mb-2">{movie.title} ({release_year})</h1>
       <p className="text-gray-300 text-sm sm:text-lg italic mb-4">{movie.tagline}</p>
       <div className="flex justify-center sm:justify-start items-center gap-4 sm:gap-6 mb-4">
-        <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
-          <span className="text-yellow-400 mr-1">★</span>
-          <span>{movie.vote_average.toFixed(1)}</span>
-        </a>
+
+{/* if omdb up ? omdb api : tmdb */}
+        {omdbImdbData ?
+          <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+            <span className="text-yellow-400 mr-1">★</span>
+            <span>{omdbImdbData.imdbRating} </span>
+            {/* endpoint */}
+            <span className='text-gray-500 pl-1'> ({omdbImdbData.imdbVotes})</span>
+          </a>
+  
+          :
+
+          <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+            <span className="text-yellow-400 mr-1">★</span>
+            <span>{movie.vote_average.toFixed(1)}</span>
+          </a>
+        }
+
+
         <div className="flex items-center">
           <span className="mr-1">⏱</span>
           <span>{formatRuntime(movie.runtime)}</span>
@@ -165,11 +189,11 @@ const MovieDetails = () => {
       >
         <div className="max-w-6xl mx-auto px-4 h-full flex flex-col sm:flex-row items-center sm:items-end pb-4 sm:pb-8 rounded-2xl">
           {/* Poster */}
-          <div className="w-40 h-60 sm:w-64 sm:h-96 bg-gray-700 rounded-lg shadow-lg mb-4 sm:mb-0">
+          <div className="w-40 h-60 sm:w-64 sm:h-96 rounded-lg shadow-lg mb-4 sm:mb-0">
             <img
               src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
               alt={movie.title}
-              className="object-cover max-w-full h-full"
+              className="object-cover max-w-full h-full "
               draggable="false"
             />
           </div>
@@ -202,12 +226,23 @@ const MovieDetails = () => {
             <div className="bg-gray-800 rounded-2xl shadow p-4">
               <h2 className="text-xl text-gray-200 sm:text-2xl font-semibold mb-4">Production Details</h2>
               <div className="space-y-2">
+              {/* Release Date */}
                 <div>
                   <h3 className="text-sm font-medium text-gray-300">Release Date</h3>
                   <p className="text-gray-500">
                     {new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                   </p>
                 </div>
+                {/* Directed by */}
+                <div>
+                  <h3 className="text-sm font-medium text-gray-300">Directed by</h3>
+                  <p className="text-gray-500">
+                    {omdbImdbData.Director}
+                  </p>
+                </div>
+
+
+                {/* Production Companies */}
                 <div>
                   <h3 className="text-sm font-medium text-gray-300">Production Companies</h3>
                   <ul className="mt-1 text-gray-500">
