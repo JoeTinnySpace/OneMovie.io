@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { fetchMovies } from '../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faStar, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { LoadingMovie } from '../components/loading_movies'
+import { LoadingMovie } from '../components/loading_movies';
+import { PosterLoader } from '../components/suspenceloader';
+import { FilterBoxLoader } from '../components/loaders/filterbox_loader';
+
 
 const STORAGE_KEYS = {
   CURRENT_INDEX: 'explore_currentIndex',
@@ -284,25 +287,46 @@ const Explore = () => {
     setCurrentIndex(prevIndex => Math.max(0, prevIndex));
   }, [movies, currentIndex, loading]);
 
+  // const resetFilters = () => {
+  //   setFilters({
+  //     sort_by: '',
+  //     with_genres: [],
+  //     'vote_average.gte': '',
+  //     'primary_release_date.gte': '',
+  //   });
+  //   fetchMovies(); // or another function to reload movies based on the reset filters
+  // };
+  
+
   const excludeMovie = useCallback(() => handleMovieAction('skip'), [handleMovieAction]);
   const saveToMyMoviesList = useCallback(() => handleMovieAction('save'), [handleMovieAction]);
 
   if (error) return <div className="text-center text-red-500">{error}</div>;
-  if (movies.length === 0) return <div className="text-center">No movies available.</div>;
+  if (movies.length === 0) return (
+    <div className="text-center space-y-4">
+      <p>No movies available.</p>
+      {/* <button 
+        onClick={resetFilters}
+        className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-900 transition-colors"
+      >
+        Reset Filter
+      </button> */}
+    </div>
+  );
 
 
   return (
     // main poster view 
-    <div className="h-full w-full flex flex-center justify-center items-center text-gray-900 dark:text-gray-100 relative">
+    <div className="h-full w-auto flex flex-center justify-center items-center text-gray-900 dark:text-gray-100 relative">
       {movies.length > 0 && currentIndex < movies.length && (
         <div className="relative max-w-full h-[70vh] flex items-center ">
-          <Suspense fallback={<LoadingMovie message={'Loading more Movies...'}/>} >
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movies[currentIndex].poster_path}`}
-            alt={movies[currentIndex].title}
-            className="object-cover max-w-full h-full rounded-3xl"
-            draggable="false"
-          />
+          <Suspense fallback={<PosterLoader />} >
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movies[currentIndex].poster_path}`}
+              alt={movies[currentIndex].title}
+              className="object-cover max-w-full h-full rounded-3xl"
+              draggable="false"
+            />
           </Suspense>
 
           {/* poster title and raating  */}
@@ -322,81 +346,83 @@ const Explore = () => {
 
           {/* Filter box */}
           {isFilterOpen && (
-            <div className="absolute top-16 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-10 max-w-sm w-full">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold">Filters</h3>
-                <button onClick={() => setIsFilterOpen(false)} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
-                  <FontAwesomeIcon icon={faTimes} className="ml-1" />
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block mb-2">Sort By</label>
-                  <select
-                    value={filters.sort_by}
-                    onChange={(e) => handleFilterChange('sort_by', e.target.value)}
-                    className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
-                  >
-                    {FILTER_OPTIONS.sort_by.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+            <Suspense fallback={FilterBoxLoader} >
+              <div className="absolute top-16 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-10 max-w-sm w-full">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold">Filters</h3>
+                  <button onClick={() => setIsFilterOpen(false)} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
+                    <FontAwesomeIcon icon={faTimes} className="ml-1" />
+                  </button>
                 </div>
 
-                <div>
-                  <label className="block mb-2">Genres</label>
-                  <div className="flex flex-wrap gap-2">
-                    {FILTER_OPTIONS.with_genres.map(option => (
-                      <button
-                        key={option.value}
-                        onClick={() => handleFilterChange('with_genres', option.value)}
-                        className={`px-3 py-1 rounded-full text-sm ${filters.with_genres.includes(option.value)
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-200 dark:bg-gray-700'
-                          }`}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block mb-2">Sort By</label>
+                    <select
+                      value={filters.sort_by}
+                      onChange={(e) => handleFilterChange('sort_by', e.target.value)}
+                      className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      {FILTER_OPTIONS.sort_by.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block mb-2">Genres</label>
+                    <div className="flex flex-wrap gap-2">
+                      {FILTER_OPTIONS.with_genres.map(option => (
+                        <button
+                          key={option.value}
+                          onClick={() => handleFilterChange('with_genres', option.value)}
+                          className={`px-3 py-1 rounded-full text-sm ${filters.with_genres.includes(option.value)
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700'
+                            }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block mb-2">Minimum Rating</label>
+                    <select
+                      value={filters['vote_average.gte']}
+                      onChange={(e) => handleFilterChange('vote_average.gte', e.target.value)}
+                      className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Any Rating</option>
+                      {FILTER_OPTIONS['vote_average.gte'].map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block mb-2">Release Year</label>
+                    <select
+                      value={filters['primary_release_date.gte']}
+                      onChange={(e) => handleFilterChange('primary_release_date.gte', e.target.value)}
+                      className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Any Year</option>
+                      {FILTER_OPTIONS['primary_release_date.gte'].map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
-
-                <div>
-                  <label className="block mb-2">Minimum Rating</label>
-                  <select
-                    value={filters['vote_average.gte']}
-                    onChange={(e) => handleFilterChange('vote_average.gte', e.target.value)}
-                    className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
-                  >
-                    <option value="">Any Rating</option>
-                    {FILTER_OPTIONS['vote_average.gte'].map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block mb-2">Release Year</label>
-                  <select
-                    value={filters['primary_release_date.gte']}
-                    onChange={(e) => handleFilterChange('primary_release_date.gte', e.target.value)}
-                    className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
-                  >
-                    <option value="">Any Year</option>
-                    {FILTER_OPTIONS['primary_release_date.gte'].map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
               </div>
-            </div>
+            </Suspense>
           )}
           {/* / Filter box */}
 
@@ -448,7 +474,7 @@ const Explore = () => {
         </div>
       )}
       {loading &&
-        <LoadingMovie message={'Loading more Movies...'}/>
+        <LoadingMovie message={'Loading more Movies...'} />
       }
     </div>
   );

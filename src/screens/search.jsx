@@ -74,15 +74,15 @@ const SearchPage = () => {
                                     className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center transition-all duration-300 ease-in-out transform"
                                     onClick={() => handleSelectMovie(suggestion)}
                                 >
-                                    <div className="w-12 h-18 bg-gray-700 rounded-md mr-4 transition-all duration-300 ease-in-out transform">
+                                    <div className="w-16 h-24 bg-gray-700 rounded-md mr-4 flex-shrink-0 transition-all duration-300 ease-in-out transform">
                                         <img
                                             src={`https://image.tmdb.org/t/p/w92${suggestion.poster_path}`}
                                             alt={suggestion.title}
-                                            className="object-cover w-full h-full rounded-md transition-all duration-300 ease-in-out transform"
+                                            className="object-cover w-full h-full rounded-md"
                                         />
                                     </div>
-                                    <div>
-                                        <h3 className="text-lg font-medium transition-all duration-300 ease-in-out transform">
+                                    <div className="flex-1">
+                                        <h3 className="text-lg font-medium truncate max-w-xs transition-all duration-300 ease-in-out transform">
                                             {suggestion.title}
                                         </h3>
                                         <p className="text-gray-400 transition-all duration-300 ease-in-out transform">
@@ -91,6 +91,7 @@ const SearchPage = () => {
                                     </div>
                                 </div>
                             ))}
+
                         </div>
                     </div>
                 )}

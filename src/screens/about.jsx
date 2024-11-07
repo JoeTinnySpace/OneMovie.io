@@ -36,9 +36,19 @@ const About = () => {
     setFeedback(''); // Clear feedback input 
   };
 
+  const resetAppData = () => {
+    localStorage.clear();
+    toast.info('App data reset successfully.');
+  };
+
+  const resetFilters = () => {
+    localStorage.removeItem('explore_filters'); 
+    toast.info('Filters reset successfully.');
+  };
+
   return (
     <div className='dark'>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 rounded-3xl">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 mb-20 rounded-3xl">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">OneMovieDiscover</h1>
 
@@ -98,6 +108,25 @@ const About = () => {
                 Submit Feedback
               </button>
             </form>
+          </section>
+
+           {/* Reset Buttons Section */}
+           <section className="mt-8">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">App Settings</h2>
+            <div className="flex space-x-4">
+              <button
+                onClick={resetAppData}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                Reset App Data
+              </button>
+              <button
+                onClick={resetFilters}
+                className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+              >
+                Reset Filters
+              </button>
+            </div>
           </section>
         </div>
       </div>
