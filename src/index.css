@@ -33,10 +33,3 @@ body {
   /* Ensure it's behind other content */
 }
 
-@media (max-width: 768px) {
-
-  /* Adjust based on your mobile breakpoint */
-  .background-image {
-    background-image: url('../public/assets/desktop-image.jpg');
-  }
-}

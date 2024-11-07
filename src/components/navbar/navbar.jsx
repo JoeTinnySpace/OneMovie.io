@@ -13,7 +13,7 @@ function Navbar() {
           } transition-colors duration-200`}
       >
         <FontAwesomeIcon icon={faHome} className="text-xl mb-1" />
-        <span>Home</span>
+        <span>Discover</span>
       </NavLink>
 
       <NavLink

@@ -2,9 +2,9 @@
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY; 
-const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY
+const OMDB_KEY = process.env.REACT_APP_OMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
-const OMDB_BASE_URL = 'http://www.omdbapi.com/'
+const OMDB_BASE_URL = 'http://www.omdbapi.com/';
 // const IMDB_BASE_URL = 'https://www.imdb.com/title/'
 
 export const fetchMovies = async (endpoint) => {
@@ -99,9 +99,7 @@ export const fetchOMDBData = async (imdb_id) => {
   const endpoint = `?i=${imdb_id}&apikey=${OMDB_KEY}`;
   // console.log(endpoint)
   try {
-    const response = await axios.get(`${OMDB_BASE_URL}${endpoint}`, {
-  
-    });
+    const response = await axios.get(`${OMDB_BASE_URL}${endpoint}`);
     return response.data; 
   } catch (error) {
   }

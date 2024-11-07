@@ -291,9 +291,10 @@ const Explore = () => {
   if (movies.length === 0) return <div className="text-center">No movies available.</div>;
 
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center text-gray-900 dark:text-gray-100 relative">
+    // main poster view 
+    <div className="h-full w-full flex flex-center justify-center items-center text-gray-900 dark:text-gray-100 relative">
       {movies.length > 0 && currentIndex < movies.length && (
-        <div className="relative w-auto h-[70vh] flex items-center ">
+        <div className="relative max-w-full h-[70vh] flex items-center ">
           <img
             src={`https://image.tmdb.org/t/p/w500${movies[currentIndex].poster_path}`}
             alt={movies[currentIndex].title}
@@ -301,6 +302,7 @@ const Explore = () => {
             draggable="false"
           />
 
+        {/* poster title and raating  */}
           <div className="absolute top-5 left-2 right-2 flex justify-between shadow-lg p-2 rounded-lg">
 
             <Link to={`/movie/${movies[currentIndex].id}`} className="text-lg text-gray-800 bg-blue-100  rounded-lg">
@@ -315,7 +317,7 @@ const Explore = () => {
             </div>
           </div>
 
-
+        {/* Filter box */}
           {isFilterOpen && (
             <div className="absolute top-16 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-10 max-w-sm w-full">
               <div className="flex justify-between items-center mb-4">
@@ -393,7 +395,9 @@ const Explore = () => {
               </div>
             </div>
           )}
+          {/* / Filter box */}
 
+          {/* Prev Next buttons */}
           <button
             className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white p-4 rounded-full transition-transform duration-200 hover:bg-gray-600 hover:scale-105 disabled:opacity-50"
             onClick={handlePreviousMovie}
@@ -411,8 +415,6 @@ const Explore = () => {
 
           {/* Button Container */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 w-full px-4 rounded-full shadow-md">
-
-
             <button
               className="bg-red-500 text-white flex-1 py-2 rounded-full flex items-center justify-center transition-transform transform hover:scale-105"
               onClick={excludeMovie}
@@ -439,6 +441,7 @@ const Explore = () => {
               My List
             </button>
           </div>
+
         </div>
       )}
       {loading &&
