@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import  ArrowKeys  from '../components/keys_demo/ArrowKeys'
 
 const BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.REACT_APP_TELEGRAM_CHAT_ID;
@@ -85,6 +86,8 @@ const About = () => {
               <li>Click on a movie title to view its details, including the overview, rating, and trailers.</li>
               <li>Add movies to your watchlist or skip them based on your preferences.</li>
             </ol>
+          <ArrowKeys/>
+          
           </section>
 
           {/* Feedback Section */}
@@ -111,8 +114,10 @@ const About = () => {
           </section>
 
            {/* Reset Buttons Section */}
-           <section className="mt-8">
+           <section className="mt-8 border-y-[1px] p-4 border-gray-300">
             <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">App Settings</h2>
+            <p className='text-red-600'>Warning! This will delete your app data</p>
+            <br />
             <div className="flex space-x-4">
               <button
                 onClick={resetAppData}

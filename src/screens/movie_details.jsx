@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMovieDetails, fetchMovieVideos, fetchSimilarMovies, fetchOMDBData } from '../api/api';
 import SimpleMovieCard from '../components/movie_card_simple/simple_movie_card'
-import { LoadingMovie } from '../components/loading_movies'
+import { LoadingMovie } from '../components/loaders/loading_movies'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 

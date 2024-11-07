@@ -1,0 +1,72 @@
+/* Base styles */
+.keyboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+  }
+  
+  .arrow-row {
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Added more space between left and right arrows */
+  .arrow-row.middle-row {
+    gap: 20px; /* Increased gap for the middle row */
+  }
+  
+  .arrow-key {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .arrow {
+    width: 50px;
+    height: 50px;
+    background-color: #4a90e2;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+  }
+  
+  .arrow.up::before {
+    content: '↑';
+    position: absolute;
+    font-size: 24px;
+  }
+  
+  .arrow.left::before {
+    content: '←';
+    position: absolute;
+    font-size: 24px;
+  }
+  
+  .arrow.down::before {
+    content: '↓';
+    position: absolute;
+    font-size: 24px;
+  }
+  
+  .arrow.right::before {
+    content: '→';
+    position: absolute;
+    font-size: 24px;
+  }
+  
+  .label {
+    margin-top: 10px;
+    font-size: 14px;
+    color: white;
+  }
+  

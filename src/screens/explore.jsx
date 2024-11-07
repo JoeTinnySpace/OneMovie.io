@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { fetchMovies } from '../api/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faStar, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { LoadingMovie } from '../components/loading_movies';
-import { PosterLoader } from '../components/suspenceloader';
+import { LoadingMovie } from '../components/loaders/loading_movies';
+import { PosterLoader } from '../components/loaders/suspenceloader';
 import { FilterBoxLoader } from '../components/loaders/filterbox_loader';
 
 
@@ -254,6 +254,10 @@ const Explore = () => {
         handleNextMovie();
       } else if (event.key === 'ArrowLeft') {
         handlePreviousMovie();
+      }else if (event.key === 'ArrowUp'){
+        excludeMovie();
+      }else if (event.key === 'ArrowDown'){
+        saveToMyMoviesList();
       }
     };
 
@@ -287,16 +291,6 @@ const Explore = () => {
     setCurrentIndex(prevIndex => Math.max(0, prevIndex));
   }, [movies, currentIndex, loading]);
 
-  // const resetFilters = () => {
-  //   setFilters({
-  //     sort_by: '',
-  //     with_genres: [],
-  //     'vote_average.gte': '',
-  //     'primary_release_date.gte': '',
-  //   });
-  //   fetchMovies(); // or another function to reload movies based on the reset filters
-  // };
-  
 
   const excludeMovie = useCallback(() => handleMovieAction('skip'), [handleMovieAction]);
   const saveToMyMoviesList = useCallback(() => handleMovieAction('save'), [handleMovieAction]);
@@ -305,12 +299,6 @@ const Explore = () => {
   if (movies.length === 0) return (
     <div className="text-center space-y-4">
       <p>No movies available.</p>
-      {/* <button 
-        onClick={resetFilters}
-        className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-900 transition-colors"
-      >
-        Reset Filter
-      </button> */}
     </div>
   );
 
