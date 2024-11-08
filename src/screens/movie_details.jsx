@@ -124,40 +124,41 @@ const MovieDetails = () => {
       <p className="text-gray-300 text-sm sm:text-lg italic mb-2">{movie.tagline}</p>
 
       <div className="flex sm:justify-start justify-center mb-2">
-          <span className="mr-1 text-center">⏱</span>
-          <span>{formatRuntime(movie.runtime)}</span>
-        </div>
-        
+        <span className="mr-1 text-center">⏱</span>
+        <span>{formatRuntime(movie.runtime)}</span>
+      </div>
+
 
       <div className="flex justify-center sm:justify-start items-center gap-4 sm:gap-6 mb-2">
 
         {/* if omdb up ? omdb api : tmdb */}
         {omdbImdbData ?
-        <>
-          <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
-            <span className="text-yellow-400 mr-1">IMDB</span>
-            <span className="text-yellow-400 mr-1">★</span>
-            <span>{omdbImdbData.imdbRating} </span>
-            {/* endpoint */}
-            <span className='text-gray-500 pl-1'> ({omdbImdbData.imdbVotes})</span>
-          </a>
-          <a href={tmdb_link + movie.id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
-          <span className="text-cyan-700 mr-1">TMDB</span>
-          <span className="text-yellow-400 mr-1">★</span>
-          <span>{movie.vote_average.toFixed(1)}</span>
-          <span className='text-gray-500 pl-1'> ({movie.vote_count})</span>
-        </a>
-        </>
-
+          <>
+            <a href={tmdb_link + movie.id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+              <span className="text-cyan-700 mr-1">TMDB</span>
+              <span className="text-yellow-400 mr-1">★</span>
+              <span>{movie.vote_average.toFixed(1)}</span>
+              <span className='text-gray-500 pl-1'> ({movie.vote_count})</span>
+            </a>
+            <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+              <span className="text-yellow-400 mr-1">IMDB</span>
+              <span className="text-yellow-400 mr-1">★</span>
+              <span>{omdbImdbData.imdbRating} </span>
+              <span className='text-gray-500 pl-1'> ({omdbImdbData.imdbVotes})</span>
+            </a>
+          </>
           :
-
-          <a href={tmdb_link + movie.id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
-            <span className="text-cyan-700 mr-1">TMDB</span>
-            <span className="text-yellow-400 mr-1">★</span>
-            <span>{movie.vote_average.toFixed(1)}</span>
-            <span className='text-gray-500 pl-1'> ({movie.vote_count})</span>
-          </a>
-          
+          <>
+            <a href={tmdb_link + movie.id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+              <span className="text-cyan-700 mr-1">TMDB</span>
+              <span className="text-yellow-400 mr-1">★</span>
+              <span>{movie.vote_average.toFixed(1)}</span>
+              <span className='text-gray-500 pl-1'> ({movie.vote_count})</span>
+            </a>
+            <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+              <span className="text-yellow-400 mr-1">IMDB</span>
+            </a>
+          </>
         }
 
       </div>
