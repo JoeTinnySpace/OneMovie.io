@@ -59,7 +59,7 @@ const About = () => {
             <p className="text-gray-600 dark:text-gray-300">
               We aim to provide a seamless experience for movie enthusiasts to discover and manage their favorite films.
               <br />
-              The data is stored on your web browser cache and it never leaves your device (Except the feedback).
+              The data is stored on your web browser cache and never leaves your device (Except the feedback).
             </p>
           </section>
 
@@ -85,6 +85,7 @@ const About = () => {
               <li>Use the filters to refine your search based on genres, ratings, and release years.</li>
               <li>Click on a movie title to view its details, including the overview, rating, and trailers.</li>
               <li>Add movies to your watchlist or skip them based on your preferences.</li>
+              <li>Use the below keyboard shortcuts to navigate the slider.</li>
             </ol>
           <ArrowKeys/>
           
