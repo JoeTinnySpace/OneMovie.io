@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 const imdb_link = 'https://www.imdb.com/title/'
+const tmdb_link = 'https://www.themoviedb.org/movie/'
 const youtube_link = 'https://www.youtube.com/watch?v='
 
 const MovieDetails = () => {
@@ -120,33 +121,48 @@ const MovieDetails = () => {
     // movie details
     <div className="text-white text-center sm:text-left sm:pl-8">
       <h1 className="text-2xl sm:text-4xl font-bold mb-2">{movie.title} ({release_year})</h1>
-      <p className="text-gray-300 text-sm sm:text-lg italic mb-4">{movie.tagline}</p>
-      <div className="flex justify-center sm:justify-start items-center gap-4 sm:gap-6 mb-4">
+      <p className="text-gray-300 text-sm sm:text-lg italic mb-2">{movie.tagline}</p>
+
+      <div className="flex sm:justify-start justify-center mb-2">
+          <span className="mr-1 text-center">⏱</span>
+          <span>{formatRuntime(movie.runtime)}</span>
+        </div>
+        
+
+      <div className="flex justify-center sm:justify-start items-center gap-4 sm:gap-6 mb-2">
 
         {/* if omdb up ? omdb api : tmdb */}
         {omdbImdbData ?
+        <>
           <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+            <span className="text-yellow-400 mr-1">IMDB</span>
             <span className="text-yellow-400 mr-1">★</span>
             <span>{omdbImdbData.imdbRating} </span>
             {/* endpoint */}
             <span className='text-gray-500 pl-1'> ({omdbImdbData.imdbVotes})</span>
           </a>
+          <a href={tmdb_link + movie.id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+          <span className="text-cyan-700 mr-1">TMDB</span>
+          <span className="text-yellow-400 mr-1">★</span>
+          <span>{movie.vote_average.toFixed(1)}</span>
+          <span className='text-gray-500 pl-1'> ({movie.vote_count})</span>
+        </a>
+        </>
 
           :
 
-          <a href={imdb_link + movie.imdb_id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+          <a href={tmdb_link + movie.id} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-gray-100">
+            <span className="text-cyan-700 mr-1">TMDB</span>
             <span className="text-yellow-400 mr-1">★</span>
             <span>{movie.vote_average.toFixed(1)}</span>
+            <span className='text-gray-500 pl-1'> ({movie.vote_count})</span>
           </a>
+          
         }
 
-
-        <div className="flex items-center">
-          <span className="mr-1">⏱</span>
-          <span>{formatRuntime(movie.runtime)}</span>
-        </div>
       </div>
-      <div className="flex  flex-wrap justify-center sm:justify-start gap-2 mb-4">
+
+      <div className="flex  flex-wrap justify-center sm:justify-start gap-2 mb-2">
         {movie.genres.map((genre) => (
           <span key={genre.id} className="px-3 py-1 bg-gray-700 rounded-full text-sm">
             {genre.name}
@@ -154,7 +170,7 @@ const MovieDetails = () => {
         ))}
       </div>
       {streaming_link ?
-        <span className="flex text-gray-300 hover:text-gray-100 sm:justify-start justify-center">
+        <span className="flex text-gray-300 hover:text-gray-100 sm:justify-start justify-center mb-2">
           <a href={movie.homepage} target='_blank' rel='noreferrer'>
             Official website <FontAwesomeIcon icon={faPlay} />
           </a>
@@ -164,7 +180,7 @@ const MovieDetails = () => {
 
 
       {trailerLink.length > 33 ?
-        <div className="flex text-gray-300  hover:text-gray-100 sm:justify-start justify-center py-2">
+        <div className="flex text-gray-300  hover:text-gray-100 sm:justify-start justify-center mb-2">
           <a href={trailerLink} target='_blank' rel='noreferrer'>
             YouTube Trailer
           </a>
