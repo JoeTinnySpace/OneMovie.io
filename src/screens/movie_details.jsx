@@ -235,6 +235,7 @@ const MovieDetails = () => {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 space-y-8">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
+
           {/* Overview Section */}
           <div className="sm:col-span-2">
             <div className="bg-gray-800 rounded-2xl shadow p-4">
@@ -242,6 +243,10 @@ const MovieDetails = () => {
               <p className="text-gray-500">{movie.overview}</p>
             </div>
           </div>
+
+          {/* ad placement */}
+
+          
 
           {/* Production Details */}
           <div>
@@ -266,8 +271,6 @@ const MovieDetails = () => {
                   :
                   <></>
                 }
-
-
                 {/* Production Companies */}
                 <div>
                   <h3 className="text-sm font-medium text-gray-300">Production Companies</h3>
@@ -280,6 +283,7 @@ const MovieDetails = () => {
               </div>
             </div>
           </div>
+
         </div>
 
         {/* TODO movie/{movie_id}/similar */}
